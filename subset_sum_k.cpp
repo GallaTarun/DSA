@@ -32,14 +32,14 @@ int dp[ITEMS+1][SUM+1];
 memset(dp, -1, sizeof(dp));
 
 bool subsetWithSumK(int n, vector<int> &ar, int targetSum, int cur) {
-    if(targetSum==0)
+    if(targetSum==0 || cur==0)
         return true;
     if(cur==n)
         return targetSum==0;
     if(dp[cur][targetSum] != -1)
         return dp[cur][targetSum]==1;
-    if(ar[cur] <= targetSum)
-        return dp[cur][targetSum] = subsetWithSumK(n, ar, targetSum-ar[cur], cur+1) || subsetWithSumK(n, ar, targetSum, cur+1);
+    if(ar[cur-1] <= targetSum)
+        return dp[cur][targetSum] = subsetWithSumK(n, ar, targetSum-ar[cur-1], cur+1) || subsetWithSumK(n, ar, targetSum, cur+1);
     return dp[cur][targetSum] = subsetWithSumK(n, ar, targetSum, cur+1);
 }
 */
@@ -55,8 +55,8 @@ bool subsetWithSumK(int n, vector<int> &ar, int targetSum) {
     
     for(int i=1;i<n+1;i++){
         for(int j=1;j<targetSum+1;j++){
-            if(ar[i] <= targetSum)
-                dp[i][j] = dp[i-1][j-ar[i]] || dp[i-1][j];
+            if(ar[i-1] <= targetSum)
+                dp[i][j] = dp[i-1][j-ar[i-1]] || dp[i-1][j];
             else dp[i][j] = dp[i-1][j];
         }
     }
